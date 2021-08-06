@@ -14,7 +14,7 @@ function getNLUInstance() {
         authenticator: new IamAuthenticator({
         apikey: api_key,
         }),
-    serviceUrl: '{url}',
+        serviceUrl: api_url,
     });
     return naturalLanguageUnderstanding;
 }
