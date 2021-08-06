@@ -32,6 +32,9 @@ class App extends React.Component {
     }
   }
 
+  getSentimentLabel = (Sentiment) => {
+
+  }
   sendForSentimentAnalysis = () => {
     this.setState({sentiment:true});
     let url = ".";
@@ -73,6 +76,7 @@ class App extends React.Component {
   
 
   render() {
+      document.title = "Sentiment Analyzer";
     return (  
       <div className="App">
       <button className="btn btn-info" onClick={this.renderTextArea}>Text</button>
