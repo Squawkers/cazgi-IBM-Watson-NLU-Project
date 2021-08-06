@@ -1,4 +1,5 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const app = new express();
 dotenv.config();
 
@@ -29,20 +30,91 @@ app.get("/",(req,res)=>{
   });
 
 app.get("/url/emotion", (req,res) => {
-
-    return res.send({"happy":"90","sad":"10"});
+    const analyzeParams = {
+        'url': req.query.url,
+        'features': {
+            'entities': {
+            'emotion': true,
+            'limit': 1
+            }
+        }
+    };
+    const naturalLanguageUnderstanding = getNLUInstance();
+    naturalLanguageUnderstanding.analyze(analyzeParams)
+        .then(emotionResults => {
+            console.log(emotionResults);
+            console.log(JSON.stringify(emotionResults.result.entities.document.emotion,null,2));
+            return res.send(emotionResults.result.entities.document.emotion,null,2);
+        })
+    .catch(err => {
+        return res.send("Error: Could not Analyze Emotion!" + err);
+    });
 });
 
 app.get("/url/sentiment", (req,res) => {
-    return res.send("url sentiment for "+req.query.url);
+    const analyzeParams = {
+        'url': req.query.url,
+        'features': {
+            'entities' : {
+            'sentiment': true,
+                'limit': 1
+            }
+        }
+    };
+    const naturalLanguageUnderstanding = getNLUInstance();
+    naturalLanguageUnderstanding.analyze(analyzeParams)
+        .then(sentimentResults => {
+            console.log(sentimentResults);
+            console.log(JSON.stringify(sentimentResults.result.entities.document.sentiment,null,2));
+            return res.send(sentimentResults.result.entities.document.sentiment,null,2);
+        })
+    .catch(err => {
+        return res.send("Error: Could not Analyze Sentiment!" + err);
+    });
 });
 
 app.get("/text/emotion", (req,res) => {
-    return res.send({"happy":"10","sad":"90"});
+    const analyzeParams = {
+        'url': req.query.text,
+        'features': {
+            'entities': {
+            'emotion': true,
+            'limit': 1
+            }
+        }
+    };
+    const naturalLanguageUnderstanding = getNLUInstance();
+    naturalLanguageUnderstanding.analyze(analyzeParams)
+        .then(emotionResults => {
+            console.log(emotionResults);
+            console.log(JSON.stringify(emotionResults.result.entities.document.emotion,null,2));
+            return res.send(emotionResults.result.entities.document.emotion,null,2);
+        })
+    .catch(err => {
+        return res.send("Error: Could not Analyze Emotion!" + err);
+    });    
 });
 
 app.get("/text/sentiment", (req,res) => {
-    return res.send("text sentiment for "+req.query.text);
+    const analyzeParams = {
+        'url': req.query.text,
+        'features': {
+            'entities' : {
+            'sentiment': true,
+                'limit': 1
+            }
+        }
+    };
+    const naturalLanguageUnderstanding = getNLUInstance();
+    naturalLanguageUnderstanding.analyze(analyzeParams)
+        .then(sentimentResults => {
+            console.log(sentimentResults);
+            console.log(JSON.stringify(sentimentResults.result.entities.document.sentiment,null,2));
+            return res.send(sentimentResults.result.entities.document.sentiment,null,2);
+        })
+    .catch(err => {
+        return res.send("Error: Could not Analyze Sentiment!" + err);
+    });
 });
 
 let server = app.listen(8080, () => {
